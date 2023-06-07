@@ -1,12 +1,24 @@
 import requests
 from string import Template
 
-def Api(firstCur, secondCur):
+def Api(firstCur, secondCur, year, month, day):
+
     api_key = "c6cfabe071361a4c3117e84f"
-    api_url_template = Template('https://v6.exchangerate-api.com/v6/$key/pair/$firstCur/$secondCur')
-    api_url = api_url_template.substitute(key = api_key, firstCur = firstCur, secondCur = secondCur)
-    response = requests.get(api_url)
-    #response.json
-    return response.json()['conversion_rate']
+
+    api_url_template_now = Template('https://v6.exchangerate-api.com/v6/$key/pair/$firstCur/$secondCur')
+    api_url_template_yesterday = Template('https://v6.exchangerate-api.com/v6/$key/history/$firstCur/$year/$month/$day')
     
-#https://v6.exchangerate-api.com/v6/c6cfabe071361a4c3117e84f/pair/USD/EUR
+    api_url_now = api_url_template_now.substitute(key = api_key, firstCur = firstCur, secondCur = secondCur)
+    api_url_yesterday = api_url_template_yesterday.substitute(key = api_key, firstCur = firstCur, secondCur = secondCur, year = year, month = month, day = day)
+    
+    response_now = requests.get(api_url_now)
+    response_yesterday = requests.get(api_url_yesterday)
+    
+    if round(response_now.json()['conversion_rate'],2) >= round(response_yesterday.json()['conversion_rates'][str(secondCur)],2):
+        return round(response_now.json()['conversion_rate'],2), True
+    else:
+        return round(response_now.json()['conversion_rate'],2), False
+    
+    # print(secondCur," ", type(response_yesterday.json()['conversion_rates'].get(secondCur)))
+    # print(response_yesterday.json()['conversion_rates'].get(str(secondCur)))
+    # return round(response_yesterday.json()['conversion_rates'][str(secondCur)],2), True

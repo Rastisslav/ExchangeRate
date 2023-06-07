@@ -1,18 +1,22 @@
 import sys
 from modules.api import Api
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
-def checkExchange(command):
-    left,right = command.split()
-    return Api(left,right),left,right
+def checkExchange(command, year, month, day):
+    left, right = command.split()
+    api, boolean = Api(left.upper(), right.upper(), year, month, day)
+    
+    return api, boolean, left, right
 
-def date():
+
+def getDate():
     now = datetime.now()
-    return now.strftime("%G-%m-%d %H:%M:%S")
+    yesterday = datetime.now() - timedelta(days=1)
+    return now.strftime("%G-%m-%d %H:%M:%S"), yesterday.strftime("%G"), yesterday.strftime("%m"), yesterday.strftime("%d")
 
 
-def cliCommands(): 
+def cliCommands():
     for command in sys.stdin:
         if 'quit' == command.rstrip():
             break
@@ -20,14 +24,27 @@ def cliCommands():
             print("show history")
         else:
             try:
-                rate,left,right = checkExchange(command.rstrip())
-                print(date(),left,right,rate)
-            except:
-                print("Wrong inmput")
-    
+                now, year, month, day = getDate()
+                rate, higherNow, left, right = checkExchange(
+                    command.rstrip(), year, month, day)
+                
+                print(
+                    now,
+                    left.upper(),
+                    right.upper(),
+                    rate,
+                    year,
+                    month,
+                    day,
+                    higherNow)
+                
+            except BaseException:
+                print("Wrong input")
+
+
 def main():
     cliCommands()
-    
+
 
 if __name__ == "__main__":
     main()
