@@ -23,7 +23,7 @@ def cliCommands():
                 rate,left,right = checkExchange(command.rstrip())
                 print(date(),left,right,rate)
             except:
-                print("Wrong imput")
+                print("Wrong inmput")
     
 def main():
     cliCommands()
