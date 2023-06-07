@@ -1,6 +1,4 @@
-from string import Template
 import sys
-import os
 from modules.api import Api
 from datetime import datetime
 
