@@ -1,7 +1,8 @@
 import sys
 from modules.api import Api
 from datetime import datetime, timedelta
-from modules.connect_db import connect_to_db, add_to_table, quit_db, show_history
+from modules.connect_db import connect_to_db, add_to_table, quit_db,\
+      show_history
 
 
 # funkcia ktora porovna exchangerate medzi dneskom a vcerajskom
@@ -14,8 +15,8 @@ def check_exchange(command, year, month, day):
 def getDate():
     now = datetime.now()
     yesterday = datetime.now() - timedelta(days=1)
-    return now.strftime("%G-%m-%d %H:%M"), yesterday.strftime(
-        "%G"), yesterday.strftime("%m"), yesterday.strftime("%d")
+    return now.strftime("%G-%m-%d %H:%M"), yesterday.strftime("%G"),\
+          yesterday.strftime("%m"), yesterday.strftime("%d")
 
 # zmeni text do jednej z danych farieb
 def prRed(skk): return ("\033[91m {}\033[00m" .format(skk))
@@ -41,9 +42,9 @@ def cli_commands():
         else:
             try:
                 now, year, month, day = getDate()
-                rate, higherNow, left, right = check_exchange(
-                    command.rstrip(), year, month, day)
-
+                
+                rate, higherNow, left, right = check_exchange(command.rstrip(), year, month, day)
+               
                 if higherNow:
                     add_to_table(
                         now,
