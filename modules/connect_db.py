@@ -37,7 +37,8 @@ def connect_to_db():
 # funkcia ktora zadava hodnoty do databazy
 def add_to_table(date, firstCurrency, secondCurrency, rate, higherNow):
     
-    sql = 'INSERT INTO history_table(date, first_currency, second_currency, rate, higher_now) VALUES (%s, %s, %s, %s, %s)'
+    sql = 'INSERT INTO history_table(date, first_currency, second_currency,'\
+        ' rate, higher_now) VALUES (%s, %s, %s, %s, %s)'
     
     cursor.execute(sql,(date, firstCurrency, secondCurrency, rate, higherNow))
     
